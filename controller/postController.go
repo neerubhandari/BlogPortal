@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"errors"
 	"net/http"
 	"strconv"
 
@@ -8,6 +9,7 @@ import (
 	"github.com/neerubhandari/BlogPortal/database"
 	"github.com/neerubhandari/BlogPortal/models"
 	"github.com/neerubhandari/BlogPortal/utils"
+	"gorm.io/gorm"
 )
 
 // create post
@@ -88,5 +90,21 @@ func UniquePost(c *gin.Context) {
 	database.DB.Model(&blog).Where("user_id=?", id).Preload("User").Find(&blog)
 	c.JSON(http.StatusOK, gin.H{
 		"data": blog,
+	})
+}
+
+func DeletePost(c *gin.Context) {
+	id, _ := strconv.Atoi(c.Param("id"))
+	blogpost := models.Blog{
+		Id: id,
+	}
+	deleteQuery := database.DB.Delete(&blogpost)
+	if errors.Is(deleteQuery.Error, gorm.ErrRecordNotFound) {
+		c.JSON(http.StatusOK, gin.H{
+			"message": "Record Not Found",
+		})
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"message": "Post deleted successfully!",
 	})
 }

@@ -15,7 +15,7 @@ func CreatePost(c *gin.Context) {
 	// Bind the request body to data
 	if err := c.ShouldBindJSON(&blogPost); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Unable to parse request body"})
-
+		return
 	}
 	//create a new record in the database with the data contained in the BlogPost object
 	if err := database.DB.Create(&blogPost).Error; err != nil {
@@ -57,6 +57,24 @@ func DetailPost(c *gin.Context) {
 
 	var blogpost models.Blog
 	database.DB.Where("id=?", id).Preload("User").First(&blogpost)
+	c.JSON(http.StatusOK, gin.H{
+		"data": blogpost,
+	})
+}
+
+// update the blog
+func UpdatePost(c *gin.Context) {
+	id, _ := strconv.Atoi(c.Param("id"))
+
+	blogpost := models.Blog{
+		Id: id,
+	}
+	// Bind the request body to data
+	if err := c.ShouldBindJSON(&blogpost); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Unable to parse request body"})
+		return
+	}
+	database.DB.Model(&blogpost).Updates(blogpost)
 	c.JSON(http.StatusOK, gin.H{
 		"data": blogpost,
 	})

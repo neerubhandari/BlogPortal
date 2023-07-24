@@ -10,5 +10,8 @@ func SetupRouter() *gin.Engine {
 
 	router.POST("/api/register", controller.Register)
 	router.POST("/api/login", controller.Login)
+	// router.Use(middleware.IsAuthenticate)
+	router.POST("/api/post", controller.CreatePost)
+
 	return router
 }

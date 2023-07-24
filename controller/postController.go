@@ -50,3 +50,14 @@ func AllPost(c *gin.Context) {
 	})
 
 }
+
+// Details about the post
+func DetailPost(c *gin.Context) {
+	id, _ := strconv.Atoi(c.Param("id"))
+
+	var blogpost models.Blog
+	database.DB.Where("id=?", id).Preload("User").First(&blogpost)
+	c.JSON(http.StatusOK, gin.H{
+		"data": blogpost,
+	})
+}

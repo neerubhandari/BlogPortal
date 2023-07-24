@@ -13,6 +13,7 @@ func SetupRouter() *gin.Engine {
 	// router.Use(middleware.IsAuthenticate)
 	router.POST("/api/post", controller.CreatePost)
 	router.GET("/api/post", controller.AllPost)
+	router.GET("/api/post/:id", controller.DetailPost)
 
 	return router
 }

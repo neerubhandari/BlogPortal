@@ -7,6 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/neerubhandari/BlogPortal/database"
 	"github.com/neerubhandari/BlogPortal/models"
+	"github.com/neerubhandari/BlogPortal/utils"
 )
 
 // create post
@@ -77,5 +78,15 @@ func UpdatePost(c *gin.Context) {
 	database.DB.Model(&blogpost).Updates(blogpost)
 	c.JSON(http.StatusOK, gin.H{
 		"data": blogpost,
+	})
+}
+
+func UniquePost(c *gin.Context) {
+	cookie, _ := c.Cookie("jwt")
+	id, _ := utils.ParseJwt(cookie)
+	var blog []models.Blog
+	database.DB.Model(&blog).Where("user_id=?", id).Preload("User").Find(&blog)
+	c.JSON(http.StatusOK, gin.H{
+		"data": blog,
 	})
 }

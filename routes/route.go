@@ -15,6 +15,7 @@ func SetupRouter() *gin.Engine {
 	router.GET("/api/post", controller.AllPost)
 	router.GET("/api/post/:id", controller.DetailPost)
 	router.PUT("/api/post/:id", controller.UpdatePost)
+	router.GET("/api/uniquepost", controller.UniquePost)
 
 	return router
 }

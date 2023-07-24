@@ -1,6 +1,9 @@
 package models
 
-import "golang.org/x/crypto/bcrypt"
+import (
+	"github.com/dgrijalva/jwt-go"
+	"golang.org/x/crypto/bcrypt"
+)
 
 type User struct {
 	Id        uint   `json:"id"`
@@ -9,6 +12,9 @@ type User struct {
 	Email     string `json:"email"`
 	Password  []byte `json:"-"`
 	Phone     string `json:"phone"`
+}
+type Claim struct {
+	jwt.StandardClaims
 }
 
 func (user *User) SetPassword(password string) {

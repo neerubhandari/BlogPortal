@@ -17,6 +17,7 @@ func SetupRouter() *gin.Engine {
 	router.PUT("/api/post/:id", controller.UpdatePost)
 	router.GET("/api/uniquepost", controller.UniquePost)
 	router.DELETE("/api/deletepost/:id", controller.DeletePost)
+	router.POST("/api/upload-image", controller.Upload)
 
 	return router
 }
